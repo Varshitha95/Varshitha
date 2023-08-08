@@ -1,7 +1,14 @@
 version: 2.1
 orbs:
   nx: nrwl/nx@1.5.1
+  node: circleci/node@5.1.0
 jobs:
+  example-job:
+    docker:
+      # replace with your preferred image
+      - image: cimg/base:stable
+    steps:
+      - node/install
   main:
     docker:
       - image: cimg/node:lts-browsers
@@ -15,6 +22,9 @@ jobs:
       - run: npx nx affected --base=$NX_BASE --head=$NX_HEAD -t test --parallel=3 --configuration=ci
       - run: npx nx affected --base=$NX_BASE --head=$NX_HEAD -t build --parallel=3
 workflows:
+  example-workflow:
+    jobs:
+      - example-job
   build:
     jobs:
       - main
